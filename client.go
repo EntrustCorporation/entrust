@@ -24,10 +24,15 @@ func New() (*Client, error) {
 	var err error
 	var clientCertificate tls.Certificate
 
-	if os.Getenv("ENTRUST_API_CERTIFICATE") != "" {
-		clientCertificate, err = tls.X509KeyPair([]byte(os.Getenv("ENTRUST_API_CERTIFICATE")), []byte(os.Getenv("ENTRUST_API_PRIVATE_KEY")))
+	certPEM := os.Getenv("ENTRUST_API_CERTIFICATE")
+	certPath := os.Getenv("ENTRUST_API_CERTIFICATE_PATH")
+
+	if certPEM != "" {
+		clientCertificate, err = tls.X509KeyPair([]byte(certPEM), []byte(os.Getenv("ENTRUST_API_PRIVATE_KEY")))
+	} else if certPath != "" {
+		clientCertificate, err = tls.LoadX509KeyPair(certPath, os.Getenv("ENTRUST_API_PRIVATE_KEY_PATH"))
 	} else {
-		clientCertificate, err = tls.LoadX509KeyPair(os.Getenv("ENTRUST_API_CERTIFICATE_FILE"), os.Getenv("ENTRUST_API_PRIVATE_KEY_FILE"))
+		return nil, fmt.Errorf("invalid configuration, no client certificate provided")
 	}
 	if err != nil {
 		return nil, fmt.Errorf("error loading client certificate key pair: %w", err)
