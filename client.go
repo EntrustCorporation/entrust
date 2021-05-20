@@ -40,7 +40,7 @@ func New() (*Client, error) {
 
 	return &Client{
 		username: os.Getenv("ENTRUST_API_USERNAME"),
-		apiKey:   os.Getenv("ENTRUST_API_PASSEWORD"),
+		apiKey:   os.Getenv("ENTRUST_API_PASSWORD"),
 		client: &http.Client{
 			Transport: &http.Transport{
 				TLSClientConfig: &tls.Config{
