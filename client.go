@@ -40,10 +40,10 @@ func New() (*Client, error) {
 
 	username := os.Getenv("ENTRUST_API_USERNAME")
 	password := os.Getenv("ENTRUST_API_PASSWORD")
-	if username != "" {
+	if username == "" {
 		return nil, fmt.Errorf("invalid configuration, no username provided")
 	}
-	if password != "" {
+	if password == "" {
 		return nil, fmt.Errorf("invalid configuration, no password provided")
 	}
 
