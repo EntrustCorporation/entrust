@@ -38,9 +38,18 @@ func New() (*Client, error) {
 		return nil, fmt.Errorf("error loading client certificate key pair: %w", err)
 	}
 
+	username := os.Getenv("ENTRUST_API_USERNAME")
+	password := os.Getenv("ENTRUST_API_PASSWORD")
+	if username != "" {
+		return nil, fmt.Errorf("invalid configuration, no username provided")
+	}
+	if password != "" {
+		return nil, fmt.Errorf("invalid configuration, no password provided")
+	}
+
 	return &Client{
-		username: os.Getenv("ENTRUST_API_USERNAME"),
-		apiKey:   os.Getenv("ENTRUST_API_PASSWORD"),
+		username: username,
+		apiKey:   password,
 		client: &http.Client{
 			Transport: &http.Transport{
 				TLSClientConfig: &tls.Config{
