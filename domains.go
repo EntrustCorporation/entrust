@@ -18,7 +18,7 @@ func (c *Client) GetDomains(offset, limit int, expiry *time.Time) (*GetDomainsRe
 		v.Set("ovExpiry", fmt.Sprintf("lt:%s", expiry.Format(time.RFC3339)))
 	}
 
-	resp, err := c.exchange(fmt.Sprintf("domains?%s", v.Encode()), http.MethodGet, nil)
+	resp, err := c.exchange(fmt.Sprintf("/domains?%s", v.Encode()), http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +34,7 @@ func (c *Client) GetDomains(offset, limit int, expiry *time.Time) (*GetDomainsRe
 // GetDomain requests information about a domain in the account
 // GET /clients/{clientId}/domains/{domain}
 func (c *Client) GetDomain(clientID int, domain string) (*Domain, error) {
-	resp, err := c.exchange(fmt.Sprintf("clients/%d/domains/%s ", clientID, domain), http.MethodGet, nil)
+	resp, err := c.exchange(fmt.Sprintf("/clients/%d/domains/%s ", clientID, domain), http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +49,7 @@ func (c *Client) GetDomain(clientID int, domain string) (*Domain, error) {
 // ReverifyDomain sends a domain for reverification.
 // PUT /clients/{clientId}/domains/{domain}
 func (c *Client) ReverifyDomain(clientID int, domain string) error {
-	_, err := c.exchange(fmt.Sprintf("clients/%d/domains/%s ", clientID, domain), http.MethodPut, ReverifyDomainRequest{
+	_, err := c.exchange(fmt.Sprintf("/clients/%d/domains/%s ", clientID, domain), http.MethodPut, ReverifyDomainRequest{
 		VerificationMethod: "DNS",
 	})
 	if err != nil {

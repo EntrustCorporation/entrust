@@ -8,7 +8,7 @@ import (
 )
 
 // Default client configurations
-const (
+var (
 	APIServer = "https://api.entrust.net/enterprise/v2"
 )
 

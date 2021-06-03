@@ -3,7 +3,6 @@ package entrust
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -13,12 +12,16 @@ import (
 )
 
 func (c *Client) exchange(path, method string, payload interface{}) ([]byte, error) {
-	jsonPayload, err := json.Marshal(payload)
-	if err != nil {
-		return nil, err
+	var err error
+	var jsonPayload []byte
+	if payload != nil {
+		jsonPayload, err = json.Marshal(payload)
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	req, err := http.NewRequest(method, fmt.Sprintf("%s/%s", APIServer, path), bytes.NewBuffer(jsonPayload))
+	req, err := http.NewRequest(method, APIServer+path, bytes.NewBuffer(jsonPayload))
 	if err != nil {
 		return nil, err
 	}
