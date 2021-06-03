@@ -1,4 +1,4 @@
-module github.com/digitorus/entrust
+module github.com/entrustcorporation/entrust
 
 go 1.16
 
