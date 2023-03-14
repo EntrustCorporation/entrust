@@ -1,6 +1,6 @@
 module github.com/entrustcorporation/entrust
 
-go 1.16
+go 1.17
 
 require (
 	github.com/sirupsen/logrus v1.9.0
